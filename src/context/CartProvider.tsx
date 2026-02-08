@@ -17,4 +17,3 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     </CartStateContext.Provider>
   );
 }
-

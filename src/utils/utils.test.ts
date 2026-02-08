@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, it, expect } from 'vitest';
-import { formatPrice, calculateTotal } from './utils';
-import type { CartItem } from '@/types';
+import { formatPrice } from './utils';
 
 describe('formatPrice', () => {
   it('should format zero correctly', () => {
@@ -36,93 +34,5 @@ describe('formatPrice', () => {
     expect(formatPrice(1)).toBe('€0.01');
     expect(formatPrice(10)).toBe('€0.10');
     expect(formatPrice(100)).toBe('€1.00');
-  });
-});
-
-describe('calculateTotal', () => {
-  const mockProducts = {
-    apple: { id: 'apple', name: 'Apple', priceInCents: 30 },
-    banana: { id: 'banana', name: 'Banana', priceInCents: 50 },
-    orange: { id: 'orange', name: 'Orange', priceInCents: 60 },
-    milk: { id: 'milk', name: 'Milk', priceInCents: 120 },
-  };
-
-  it('should return 0 for empty cart', () => {
-    expect(calculateTotal([])).toBe(0);
-  });
-
-  it('should calculate total for single item with quantity 1', () => {
-    const cart: CartItem[] = [{ product: mockProducts.apple, quantity: 1 }];
-    expect(calculateTotal(cart)).toBe(30);
-  });
-
-  it('should calculate total for single item with multiple quantity', () => {
-    const cart: CartItem[] = [{ product: mockProducts.apple, quantity: 3 }];
-    expect(calculateTotal(cart)).toBe(90); // 30 * 3
-  });
-
-  it('should calculate total for complex cart', () => {
-    const cart: CartItem[] = [
-      { product: mockProducts.apple, quantity: 5 },
-      { product: mockProducts.banana, quantity: 2 },
-      { product: mockProducts.orange, quantity: 1 },
-      { product: mockProducts.milk, quantity: 3 },
-    ];
-    // 5*30 + 2*50 + 1*60 + 3*120 = 150 + 100 + 60 + 360 = 670
-    expect(calculateTotal(cart)).toBe(670);
-  });
-
-  it('should handle items with zero quantity', () => {
-    const cart: CartItem[] = [{ product: mockProducts.apple, quantity: 0 }];
-    expect(calculateTotal(cart)).toBe(0);
-  });
-
-  describe('validation (if enabled)', () => {
-    it('should throw error for non-array input', () => {
-      expect(() => calculateTotal(null as any)).toThrow(
-        'Cart items must be an array'
-      );
-      expect(() => calculateTotal(undefined as any)).toThrow(
-        'Cart items must be an array'
-      );
-      expect(() => calculateTotal({} as any)).toThrow(
-        'Cart items must be an array'
-      );
-    });
-
-    it('should throw error for invalid cart item structure', () => {
-      const invalidCart = [{ product: null, quantity: 1 }] as any;
-      expect(() => calculateTotal(invalidCart)).toThrow(
-        'Invalid cart item: missing product'
-      );
-    });
-
-    it('should throw error for negative quantity', () => {
-      const cart: CartItem[] = [{ product: mockProducts.apple, quantity: -1 }];
-      expect(() => calculateTotal(cart)).toThrow('Invalid quantity');
-    });
-
-    it('should throw error for invalid quantity type', () => {
-      const cart = [
-        { product: mockProducts.apple, quantity: 'invalid' },
-      ] as any;
-      expect(() => calculateTotal(cart)).toThrow('Invalid quantity');
-    });
-
-    it('should throw error for negative price', () => {
-      const invalidProduct = { id: 'bad', name: 'Bad', priceInCents: -10 };
-      const cart: CartItem[] = [{ product: invalidProduct, quantity: 1 }];
-      expect(() => calculateTotal(cart)).toThrow('Invalid price');
-    });
-
-    it('should throw error for invalid price type', () => {
-      const invalidProduct = {
-        id: 'bad',
-        name: 'Bad',
-        priceInCents: 'free',
-      } as any;
-      const cart: CartItem[] = [{ product: invalidProduct, quantity: 1 }];
-      expect(() => calculateTotal(cart)).toThrow('Invalid price');
-    });
   });
 });

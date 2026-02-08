@@ -2,7 +2,10 @@ import { useCartState } from '@/hooks/useCart';
 import { formatPrice } from '@/utils/utils';
 import { CartItem } from './CartItem';
 import { offers } from '@/data/offers';
-import { calculateTotalWithDiscounts, calculateSavings } from '@/services/discountService';
+import {
+  calculateTotalWithDiscounts,
+  calculateSavings,
+} from '@/services/discountService';
 
 export function Cart() {
   const cartItems = useCartState();
@@ -23,21 +26,21 @@ export function Cart() {
     <aside>
       <h2>Cart</h2>
       <ul>
-        {cartItems.map((item) => (
-          <CartItem
-            key={item.product.id}
-            product={item.product}
-            quantity={item.quantity}
-          />
-        ))}
+        {cartItems.map((item) => {
+          const offer = offers.find((o) => o.productId === item.product.id);
+          return (
+            <CartItem
+              key={item.product.id}
+              product={item.product}
+              quantity={item.quantity}
+              offer={offer}
+            />
+          );
+        })}
       </ul>
-      
-      {savings > 0 && (
-        <p>
-           You save: {formatPrice(savings)}
-        </p>
-      )}
-      
+
+      {savings > 0 && <p>You save: {formatPrice(savings)}</p>}
+
       <p>
         <strong>Total: {formatPrice(totalInCents)}</strong>
       </p>

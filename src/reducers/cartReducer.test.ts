@@ -100,6 +100,49 @@ describe('cartReducer', () => {
     });
   });
 
+  describe('Non-existent productId', () => {
+    it('should not change state when INCREASE targets non-existent product', () => {
+      const initialState: CartItem[] = [
+        { product: mockProducts.apple, quantity: 1 },
+      ];
+
+      const result = cartReducer(initialState, {
+        type: 'INCREASE',
+        productId: 'nonexistent',
+      });
+
+      expect(result).toHaveLength(1);
+      expect(result[0].quantity).toBe(1);
+    });
+
+    it('should not change state when DECREASE targets non-existent product', () => {
+      const initialState: CartItem[] = [
+        { product: mockProducts.apple, quantity: 2 },
+      ];
+
+      const result = cartReducer(initialState, {
+        type: 'DECREASE',
+        productId: 'nonexistent',
+      });
+
+      expect(result).toHaveLength(1);
+      expect(result[0].quantity).toBe(2);
+    });
+
+    it('should not change state when REMOVE targets non-existent product', () => {
+      const initialState: CartItem[] = [
+        { product: mockProducts.apple, quantity: 1 },
+      ];
+
+      const result = cartReducer(initialState, {
+        type: 'REMOVE',
+        productId: 'nonexistent',
+      });
+
+      expect(result).toHaveLength(1);
+    });
+  });
+
   describe('Edge cases with invalid quantities', () => {
     it('should remove product with quantity 0 when using REMOVE action', () => {
       const initialState: CartItem[] = [

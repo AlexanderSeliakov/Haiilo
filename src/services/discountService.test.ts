@@ -49,6 +49,10 @@ describe('discountService', () => {
   });
 
   describe('calculateTotalWithDiscounts', () => {
+    it('should return 0 for empty cart', () => {
+      expect(calculateTotalWithDiscounts([], mockOffers)).toBe(0);
+    });
+
     it('should calculate total with no discounts applied', () => {
       const cartItems: CartItem[] = [
         { product: mockProducts.apple, quantity: 1 },
@@ -68,7 +72,14 @@ describe('discountService', () => {
         { product: mockProducts.apple, quantity: 4 },
         { product: mockProducts.banana, quantity: 5 },
       ];
+      // apples: 2*45 + 0*30 = 90, bananas: 1*130 + 2*50 = 230 → 320
       expect(calculateTotalWithDiscounts(cartItems, mockOffers)).toBe(320);
+    });
+
+    it('should calculate total for product without an offer', () => {
+      const orange = { id: 'orange', name: 'Orange', priceInCents: 60 };
+      const cartItems: CartItem[] = [{ product: orange, quantity: 3 }];
+      expect(calculateTotalWithDiscounts(cartItems, mockOffers)).toBe(180);
     });
   });
 
@@ -84,7 +95,18 @@ describe('discountService', () => {
       const cartItems: CartItem[] = [
         { product: mockProducts.apple, quantity: 2 },
       ];
+      // regular: 2*30=60, discounted: 45, savings: 15
       expect(calculateSavings(cartItems, mockOffers)).toBe(15);
+    });
+
+    it('should calculate savings with multiple discounted products', () => {
+      const cartItems: CartItem[] = [
+        { product: mockProducts.apple, quantity: 4 },
+        { product: mockProducts.banana, quantity: 3 },
+      ];
+      // apples regular: 4*30=120, discounted: 2*45=90, save 30
+      // bananas regular: 3*50=150, discounted: 130, save 20
+      expect(calculateSavings(cartItems, mockOffers)).toBe(50);
     });
   });
 });

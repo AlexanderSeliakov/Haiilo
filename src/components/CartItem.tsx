@@ -1,13 +1,15 @@
-import type { Product } from '@/types';
+import type { Product, Offer } from '@/types';
 import { formatPrice } from '@/utils/utils';
 import { useCartDispatch } from '@/hooks/useCart';
+import { calculateItemPrice } from '@/services/discountService';
 
 interface CartItemProps {
   product: Product;
   quantity: number;
+  offer?: Offer;
 }
 
-export function CartItem({ product, quantity }: CartItemProps) {
+export function CartItem({ product, quantity, offer }: CartItemProps) {
   const dispatch = useCartDispatch();
 
   const handleDecrease = () => {
@@ -22,11 +24,13 @@ export function CartItem({ product, quantity }: CartItemProps) {
     dispatch({ type: 'REMOVE', productId: product.id });
   };
 
+  const linePrice = calculateItemPrice({ product, quantity }, offer);
+
   return (
     <li>
       <span>{product.name}</span>
       <span>x{quantity}</span>
-      <span>{formatPrice(product.priceInCents * quantity)}</span>
+      <span>{formatPrice(linePrice)}</span>
       <button type="button" onClick={handleDecrease}>
         -
       </button>

@@ -7,7 +7,7 @@ function App() {
     <CartProvider>
       <main>
         <h1>Supermarket Checkout</h1>
-        <ProductList/>
+        <ProductList />
         <Cart />
       </main>
     </CartProvider>

@@ -4,7 +4,6 @@ import { ProductItem } from './ProductItem';
 import { CartProvider } from '@/context/CartProvider';
 
 describe('ProductItem', () => {
-
   it('should render products correctly', () => {
     const banana = {
       id: 'banana',

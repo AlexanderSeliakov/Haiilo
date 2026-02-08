@@ -1,8 +1,6 @@
-
 import { ProductItem } from './ProductItem';
 import { offers } from '@/data/offers';
 import { products } from '@/data/products';
-
 
 export function ProductList() {
   return (

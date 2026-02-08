@@ -23,7 +23,9 @@ export function ProductItem({ product, offer }: ProductItemProps) {
           {offer.quantity} for {formatPrice(offer.priceInCents)}
         </span>
       )}
-      <button type="button" onClick={handleAddToCart}>Add to cart</button>
+      <button type="button" onClick={handleAddToCart}>
+        Add to cart
+      </button>
     </li>
   );
 }
