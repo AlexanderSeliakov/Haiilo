@@ -1,0 +1,90 @@
+import { describe, it, expect } from 'vitest';
+import {
+  calculateItemPrice,
+  calculateTotalWithDiscounts,
+  calculateSavings,
+} from './discountService';
+import type { CartItem, Offer } from '@/types';
+
+describe('discountService', () => {
+  const mockProducts = {
+    apple: { id: 'apple', name: 'Apple', priceInCents: 30 },
+    banana: { id: 'banana', name: 'Banana', priceInCents: 50 },
+  };
+
+  const mockOffers: Offer[] = [
+    { productId: 'apple', quantity: 2, priceInCents: 45 },
+    { productId: 'banana', quantity: 3, priceInCents: 130 },
+  ];
+
+  describe('calculateItemPrice', () => {
+    it('should calculate regular price when no offer', () => {
+      const item: CartItem = { product: mockProducts.apple, quantity: 3 };
+      expect(calculateItemPrice(item, undefined)).toBe(90); // 3 * 30
+    });
+
+    it('should calculate regular price when quantity below offer threshold', () => {
+      const item: CartItem = { product: mockProducts.apple, quantity: 1 };
+      const offer = mockOffers[0];
+      expect(calculateItemPrice(item, offer)).toBe(30); // 1 * 30
+    });
+
+    it('should apply discount for exact quantity match', () => {
+      const item: CartItem = { product: mockProducts.apple, quantity: 2 };
+      const offer = mockOffers[0];
+      expect(calculateItemPrice(item, offer)).toBe(45); // offer price
+    });
+
+    it('should apply discount and add remaining items at regular price', () => {
+      const item: CartItem = { product: mockProducts.apple, quantity: 5 };
+      const offer = mockOffers[0];
+      expect(calculateItemPrice(item, offer)).toBe(120);
+    });
+
+    it('should handle multiple discount sets', () => {
+      const item: CartItem = { product: mockProducts.banana, quantity: 7 };
+      const offer = mockOffers[1];
+      expect(calculateItemPrice(item, offer)).toBe(310);
+    });
+  });
+
+  describe('calculateTotalWithDiscounts', () => {
+    it('should calculate total with no discounts applied', () => {
+      const cartItems: CartItem[] = [
+        { product: mockProducts.apple, quantity: 1 },
+      ];
+      expect(calculateTotalWithDiscounts(cartItems, mockOffers)).toBe(30);
+    });
+
+    it('should calculate total with discount applied', () => {
+      const cartItems: CartItem[] = [
+        { product: mockProducts.apple, quantity: 2 },
+      ];
+      expect(calculateTotalWithDiscounts(cartItems, mockOffers)).toBe(45);
+    });
+
+    it('should calculate total with multiple products and mixed discounts', () => {
+      const cartItems: CartItem[] = [
+        { product: mockProducts.apple, quantity: 4 },
+        { product: mockProducts.banana, quantity: 5 },
+      ];
+      expect(calculateTotalWithDiscounts(cartItems, mockOffers)).toBe(320);
+    });
+  });
+
+  describe('calculateSavings', () => {
+    it('should return 0 when no discounts applied', () => {
+      const cartItems: CartItem[] = [
+        { product: mockProducts.apple, quantity: 1 },
+      ];
+      expect(calculateSavings(cartItems, mockOffers)).toBe(0);
+    });
+
+    it('should calculate savings correctly', () => {
+      const cartItems: CartItem[] = [
+        { product: mockProducts.apple, quantity: 2 },
+      ];
+      expect(calculateSavings(cartItems, mockOffers)).toBe(15);
+    });
+  });
+});

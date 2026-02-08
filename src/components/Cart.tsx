@@ -1,6 +1,8 @@
 import { useCartState } from '@/hooks/useCart';
-import { formatPrice, calculateTotal } from '@/utils/utils';
+import { formatPrice } from '@/utils/utils';
 import { CartItem } from './CartItem';
+import { offers } from '@/data/offers';
+import { calculateTotalWithDiscounts, calculateSavings } from '@/services/discountService';
 
 export function Cart() {
   const cartItems = useCartState();
@@ -14,7 +16,8 @@ export function Cart() {
     );
   }
 
-  const totalInCents = calculateTotal(cartItems);
+  const totalInCents = calculateTotalWithDiscounts(cartItems, offers);
+  const savings = calculateSavings(cartItems, offers);
 
   return (
     <aside>
@@ -28,6 +31,13 @@ export function Cart() {
           />
         ))}
       </ul>
+      
+      {savings > 0 && (
+        <p>
+           You save: {formatPrice(savings)}
+        </p>
+      )}
+      
       <p>
         <strong>Total: {formatPrice(totalInCents)}</strong>
       </p>
