@@ -1,14 +1,17 @@
 import { ProductList } from '@/components/ProductList';
 import { Cart } from '@/components/Cart';
+import { CartProvider } from '@/context/CartContext';
 import { products } from '@/data/products';
 
 function App() {
   return (
-    <main>
-      <h1>Supermarket Checkout</h1>
-      <ProductList products={products} />
-      <Cart />
-    </main>
+    <CartProvider>
+      <main>
+        <h1>Supermarket Checkout</h1>
+        <ProductList products={products} />
+        <Cart />
+      </main>
+    </CartProvider>
   );
 }
 
