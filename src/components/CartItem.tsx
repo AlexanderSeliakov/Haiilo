@@ -1,6 +1,6 @@
 import type { Product } from '@/types';
 import { formatPrice } from '@/utils/utils';
-import { useCartDispatch } from '@/context/CartContext';
+import { useCartDispatch } from '@/hooks/useCart';
 
 interface CartItemProps {
   product: Product;

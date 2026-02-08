@@ -1,4 +1,4 @@
-import { useCartState } from '@/context/CartContext';
+import { useCartState } from '@/hooks/useCart';
 import { formatPrice, calculateTotal } from '@/utils/utils';
 import { CartItem } from './CartItem';
 

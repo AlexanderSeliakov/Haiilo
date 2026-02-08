@@ -1,6 +1,6 @@
 import { ProductList } from '@/components/ProductList';
 import { Cart } from '@/components/Cart';
-import { CartProvider } from '@/context/CartContext';
+import { CartProvider } from '@/context/CartProvider';
 import { products } from '@/data/products';
 
 function App() {
