@@ -4,9 +4,9 @@ import { products } from '@/data/products';
 
 export function ProductList() {
   return (
-    <section>
-      <h2>Products</h2>
-      <ul>
+    <section className="products">
+      <h2 className="products__title">Products</h2>
+      <ul className="products__list">
         {products.map((product) => (
           <ProductItem
             key={product.id}

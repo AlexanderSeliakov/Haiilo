@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import type { Product, Offer } from '@/types';
 import { formatPrice } from '@/utils/utils';
 import { useCartDispatch } from '@/hooks/useCart';
@@ -9,7 +10,11 @@ interface CartItemProps {
   offer?: Offer;
 }
 
-export function CartItem({ product, quantity, offer }: CartItemProps) {
+export const CartItem = memo(function CartItem({
+  product,
+  quantity,
+  offer,
+}: CartItemProps) {
   const dispatch = useCartDispatch();
 
   const handleDecrease = () => {
@@ -27,19 +32,37 @@ export function CartItem({ product, quantity, offer }: CartItemProps) {
   const linePrice = calculateItemPrice({ product, quantity }, offer);
 
   return (
-    <li>
-      <span>{product.name}</span>
-      <span>x{quantity}</span>
-      <span>{formatPrice(linePrice)}</span>
-      <button type="button" onClick={handleDecrease}>
-        -
-      </button>
-      <button type="button" onClick={handleIncrease}>
-        +
-      </button>
-      <button type="button" onClick={handleRemove}>
-        Remove
-      </button>
+    <li className="cart-item">
+      <div className="cart-item__details">
+        <span className="cart-item__name">{product.name}</span>
+        <span className="cart-item__price">{formatPrice(linePrice)}</span>
+      </div>
+      <div className="cart-item__actions">
+        <div className="cart-item__quantity">
+          <button
+            className="cart-item__qty-btn"
+            type="button"
+            onClick={handleDecrease}
+          >
+            -
+          </button>
+          <span className="cart-item__qty-value">{quantity}</span>
+          <button
+            className="cart-item__qty-btn"
+            type="button"
+            onClick={handleIncrease}
+          >
+            +
+          </button>
+        </div>
+        <button
+          className="cart-item__remove-btn"
+          type="button"
+          onClick={handleRemove}
+        >
+          Remove
+        </button>
+      </div>
     </li>
   );
-}
+});

@@ -12,9 +12,9 @@ export function Cart() {
 
   if (cartItems.length === 0) {
     return (
-      <aside>
-        <h2>Cart</h2>
-        <p>Your cart is empty.</p>
+      <aside className="cart">
+        <h2 className="cart__title">Cart</h2>
+        <p className="cart__empty">Your cart is empty.</p>
       </aside>
     );
   }
@@ -23,9 +23,9 @@ export function Cart() {
   const savings = calculateSavings(cartItems, offers);
 
   return (
-    <aside>
-      <h2>Cart</h2>
-      <ul>
+    <aside className="cart">
+      <h2 className="cart__title">Cart</h2>
+      <ul className="cart__list">
         {cartItems.map((item) => {
           const offer = offers.find((o) => o.productId === item.product.id);
           return (
@@ -39,11 +39,14 @@ export function Cart() {
         })}
       </ul>
 
-      {savings > 0 && <p>You save: {formatPrice(savings)}</p>}
-
-      <p>
-        <strong>Total: {formatPrice(totalInCents)}</strong>
-      </p>
+      <div className="cart__summary">
+        {savings > 0 && (
+          <p className="cart__savings">You save: {formatPrice(savings)}</p>
+        )}
+        <p className="cart__total">
+          <strong>Total: {formatPrice(totalInCents)}</strong>
+        </p>
+      </div>
     </aside>
   );
 }

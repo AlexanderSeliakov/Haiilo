@@ -5,10 +5,12 @@ import { CartProvider } from '@/context/CartProvider';
 function App() {
   return (
     <CartProvider>
-      <main>
-        <h1>Supermarket Checkout</h1>
-        <ProductList />
-        <Cart />
+      <main className="app">
+        <h1 className="app__title">Supermarket Checkout</h1>
+        <div className="app__content">
+          <ProductList />
+          <Cart />
+        </div>
       </main>
     </CartProvider>
   );

@@ -15,15 +15,23 @@ export function ProductItem({ product, offer }: ProductItemProps) {
   };
 
   return (
-    <li>
-      <span>{product.name}</span>
-      <span>{formatPrice(product.priceInCents)}</span>
+    <li className="product-item">
+      <div className="product-item__info">
+        <span className="product-item__name">{product.name}</span>
+        <span className="product-item__price">
+          {formatPrice(product.priceInCents)}
+        </span>
+      </div>
       {offer && (
-        <span>
+        <span className="product-item__offer">
           {offer.quantity} for {formatPrice(offer.priceInCents)}
         </span>
       )}
-      <button type="button" onClick={handleAddToCart}>
+      <button
+        className="product-item__add-btn"
+        type="button"
+        onClick={handleAddToCart}
+      >
         Add to cart
       </button>
     </li>
