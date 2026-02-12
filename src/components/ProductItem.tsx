@@ -1,18 +1,24 @@
 import type { Product, Offer } from '@/types';
 import { formatPrice } from '@/utils/utils';
-import { useCartDispatch } from '@/hooks/useCart';
+import { useCartDispatch,  } from '@/hooks/useCart';
 
 interface ProductItemProps {
   product: Product;
+  quanitity: number
   offer?: Offer;
 }
 
-export function ProductItem({ product, offer }: ProductItemProps) {
+export function ProductItem({ product, offer, quanitity }: ProductItemProps) {
   const dispatch = useCartDispatch();
+
+
+  const disabled = quanitity >= 10
 
   const handleAddToCart = () => {
     dispatch({ type: 'ADD', product });
   };
+
+
 
   return (
     <li className="product-item">
@@ -28,9 +34,10 @@ export function ProductItem({ product, offer }: ProductItemProps) {
         </span>
       )}
       <button
-        className="product-item__add-btn"
+        className={`product-item__add-btn ${disabled ? 'disabled' : ''}`}
         type="button"
         onClick={handleAddToCart}
+        disabled={disabled}
       >
         Add to cart
       </button>
